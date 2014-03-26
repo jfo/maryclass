@@ -85,6 +85,20 @@ end
 
 # p avgheights(people)
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # cars!!!
 
 def race(time = 5)

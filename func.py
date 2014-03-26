@@ -78,6 +78,12 @@ if len(heights) > 0:
 # print average_height
 
 
+
+
+
+
+
+
 # CARS!
 
 from random import random

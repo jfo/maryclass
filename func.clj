@@ -71,6 +71,25 @@
     (println (first [ 1 2 3 ]))
     (println (rest [ 1 2 3 ])))
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 (defn race
   "this function is not done"
   ([] (race 5))
@@ -79,10 +98,30 @@
          timer timer]
      (if (= 0 timer)
        nil
-       (do 
-           (println (map #(repeat % "-") car-positions))
-           (recur car-positions (- timer 1)))))))
+       (do
+         (doseq [i car-positions] (println (apply str (repeat i "-"))))
+         (println)
+         (recur (map (fn [n] (if (> (rand) 0.5)
+                               (inc n)
+                               n))
+                     car-positions)
+                (- timer 1)))))))
 
-(race)
+
+(> (rand) 0.5)
+(rand)
+(race )
 
 
+
+(defn mynat [x]
+  (lazy-seq
+    (cons x (mynat (+ x 1)))))
+
+
+(take 1 (mynat 1))
+
+(take 50 (mynat 400))
+
+
+(apply str (replicate 5 "-"))
