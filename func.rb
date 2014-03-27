@@ -89,23 +89,13 @@ end
 
 
 
-
-
-
-
-
-
-
-
-
-
 # cars!!!
 
 def race(time = 5)
 
   car_positions = [1,1,1]
 
-  while time > 0 do
+  while time > 1 do
     time -= 1
     puts ''
     for i in (0...car_positions.length) do
@@ -117,4 +107,74 @@ def race(time = 5)
   end
 end
 
-race
+# race
+
+# functionally but subroutines:
+
+@time = 5
+@car_positions = [1, 1, 1]
+
+def move_cars
+  @car_positions.map! {|n| rand > 0.3 ? n += 1 : n }
+end
+
+def draw_car(car_position)
+  print '-' * car_position
+  puts
+end
+
+def run_step_of_race
+  @time -= 1
+  move_cars
+end
+
+def draw
+  puts
+  for car_position in @car_positions
+    draw_car(car_position)
+  end
+end
+
+# while @time > 0
+#   run_step_of_race
+#   draw
+# end
+
+
+# functional version
+
+def move_cars(car_positions)
+  car_positions.map do |x|
+    if rand > 0.3
+      x + 1
+    else
+      x
+    end
+  end
+end
+
+def output_car(car_position)
+  '-' * car_position
+end
+
+def run_step_of_race(state)
+  {'time' => (state['time'] - 1),
+   'car_positions' => move_cars(state['car_positions'])}
+end
+
+def draw(state)
+  puts
+  state['car_positions'].map do |e|
+    output_car(e)
+  end.join("\n")
+end
+
+def race(state)
+  print draw(state)
+  puts
+  if state['time'] > 0
+    race(run_step_of_race(state))
+  end
+end
+
+race({'time'=> 5, 'car_positions'=> [1, 1, 1]})

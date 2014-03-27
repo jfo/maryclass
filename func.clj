@@ -76,20 +76,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 (defn race
   "this function is not done"
   ([] (race 5))
@@ -113,15 +99,82 @@
 (race )
 
 
-
+; alan helped with lazyseqs
 (defn mynat [x]
   (lazy-seq
     (cons x (mynat (+ x 1)))))
 
-
 (take 1 (mynat 1))
-
-(take 50 (mynat 400))
-
-
+(take 50 (mynat 1))
 (apply str (replicate 5 "-"))
+
+; functionally but subroutines? once again, sillytime!
+
+(def car-positions [1 1 1])
+(def timer 5)
+
+(defn move-cars
+  ([] (move-cars car-positions))
+  ([car-pos]
+   (def car-positions
+    (for [n car-pos]
+      (if (> (rand) 0.3)
+        (+ n 1)
+        n)))))
+
+(defn draw-car [pos]
+  (apply println (replicate pos "-")))
+
+(defn run-step-of-race []
+    (do
+      (def timer (- timer 1))
+      (move-cars)))
+
+(defn draw []
+  (for [pos car-positions]
+    (str (draw-car pos))))
+
+(while (> timer 0)
+  (run-step-of-race)
+  (draw))
+
+
+(draw)
+(run-step-of-race)
+(str timer)
+
+; blerp blerp works enough
+
+
+; =============================================
+(defn move-cars [car-positions]
+  (map #((if (> (rand) 0)
+           (+ 1 %)
+           %))
+       car-positions))
+
+(defn output-car [pos]
+  (apply str (replicate pos "-")))
+
+(defn run-step-of-race [state]
+  {"time" (- (state "time") 1)
+   "car-positions" (move-cars (state "car-positions"))})
+
+(defn draw [state]
+  (newline)
+  (map #(output-car %) (state "car-positions")))
+
+(defn race [state]
+  (draw state)
+  (if (> (state "time") 0)
+    (race (run-step-of-race state))))
+
+(race {"time" 5 "car-positions" [1 1 1]})
+
+; (AHHHH HOW DO I PRINT ANYTHING:????)
+(do
+  (print "derp")
+  (newline)
+  (print "derp"))
+
+; =============================================
